@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="login.css">
+
+
+    <script type="text/javascript">
+
+      function registerUser() {
+        var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  
+  var raw = JSON.stringify({
+    "user_name": document.getElementById("user_name").value,
+    "password": document.getElementById("password").value
+  });
+  
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  
+  fetch("http://localhost:50935/api/Account", requestOptions)
+    .then(response =>       window.alert("User created successfully")
+)
+    .then(result =>{
+      window.alert("User created successfully")
+      
+    })
+    .catch(error => console.log('error', error));
+  
+  }
+</script>
+  
+</head>
+<body>
+    
+        <div class="imgcontainer">
+          
+        </div>
+      
+        <div class="container">
+          <h1>Signup</h1>
+          <p>Please fill in this form to Signup to account.</p>
+          <label for="uname"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required id="user_name">
+      
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required id="password">
+      
+          <button type="button" onclick="registerUser()" >SignUp</button>
+          
+          <a href="index.html"><button type="button" class="cancelbtn">Cancel</button></a>
+          
+        </div>
+      
+        
+        
+    
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog</title>
+    <link rel="stylesheet" href="home.css">
+<script>
+function  LoadBolgs(){
+    var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer "+localStorage.getItem("auth"));
+
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch("http://localhost:50935/api/blog", requestOptions)
+  .then(response => response.text())
+  .then(result =>{ 
+      let response = JSON.parse(result)
+      response.map(row =>{
+          debugger;
+          const   {id,content,imageUrl,title,writtenBy,writtenDate} = row;
+          let html = `<li class="list-item">
+    <div class="list-content">
+      <h2 >${title}</h2>
+      <img src="http://localhost:50935/${imageUrl}"  alt="image" />
+      <p>${content}</p>
+      <a href="">Link</a>
+    </div>
+  </li>`
+          document.getElementById("blogs").innerHTML+=html;
+      })
+  })
+  .catch(error => console.log('error', error));
+}
+function saveblog(){
+
+    var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer "+localStorage.getItem("auth"));
+
+var formdata = new FormData();
+formdata.append("title", document.getElementById("title").value);
+formdata.append("content", document.getElementById("content").value);
+//formdata.append("Image", fileInput.files[0], "/C:/Users/Ali Khan/Pictures/Capture.PNG");
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("http://localhost:50935/api/blog", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+}
+</script> 
+</head>
+
+<body onload="LoadBolgs()">
+    <header>
+
+        <div class="container">
+            <nav>To write a blog    <a class="button" href="#popup1">Click here</a></nav>
+        
+    
+        </div>
+    </header>
+  <div>
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
+      
+<ul class="list" id="blogs">
+</div>
+<div id="popup1" class="overlay">
+	<div class="popup">
+        <label for="Title"><b>Title</b></label>
+        <input type="text" name="title" id="title">
+        
+        <label for="Content"><b>Content</b></label>
+		<form>
+            <textarea id="content" name="message" rows="10" cols="30"></textarea>
+            <br><br>
+            
+          </form>
+        <input type="file"><b></b>
+        <button type="button" onclick="saveblog()">Submit</button>
+		
+	</div>
+</div>
+
+
+</body>
+</html>
